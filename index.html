@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <link rel="stylesheet" href="/common/fonts/fonts.css">
+  <link rel="stylesheet" href="/common/base.css">
+  <link rel="stylesheet" href="/games/game.css">
+  <link rel="stylesheet" href="/games/popsauce/popsauce.css">
+</head>
+
+<body>
+  <div class="loading page">
+    <div data-text="loading">Loading…</div>
+  </div>
+  <div class="main page" hidden>
+    <div class="top">
+      <header class="status"></header>
+      <div class="startRoundNow" hidden>&nbsp;<a href="#" data-text="startNow">Start now</a></div>
+    </div>
+    <div class="restAndScoreboard">
+      <div class="middleAndBottom">
+        <div class="middle">
+          <div class="darkSettings rules darkScrollbar">
+            <div class="tutorial">
+              <header data-text="howToPlay">How to play</header>
+              <p data-text="guessQuotes">Guess where each quote or picture came from.
+                The earlier you find the answer, the more points you score!</p>
+            </div>
+            <fieldset disabled>
+              <div class="setting rule dictionaryId">
+                <div class="label" data-text="languageRuleLabel">👄 Language</div>
+                <div class="field"><select></select></div>
+              </div>
+              <div class="setting rule tags">
+                <div class="label" data-text="tagFilteringRuleLabel">🏷️ Tag filtering</div>
+                <div class="info">
+                  <span data-text="tagFilteringRuleInfo">Only challenges matching these filters will be picked. Current
+                    matches:</span>
+                  <span class="filteredQuoteCount"></span> <span data-text="outOf">out of</span> <span
+                    class="totalQuoteCount"></span>.
+                </div>
+                <div class="field">
+                  <div class="list darkScrollbar">
+                  </div>
+
+                  <div class="insert">
+                    <datalist id="quoteTags"></datalist>
+                    <input type="text" list="quoteTags">
+                    <button class="addUnion" title="Union (include challenges with this tag)"
+                      data-title-text="filterUnion">∪</button>
+                    <button class="addIntersection" title="Intersection (only challenges with this tag)"
+                      data-title-text="filterIntersection">∩</button>
+                    <button class="addDifference" title="Difference (exclude challenges with this tag)"
+                      data-title-text="filterDifference">∖</button>
+                  </div>
+                </div>
+              </div>
+              <div class="setting rule scoreGoal">
+                <div class="label" data-text="scoreGoalRuleLabel">🎯 Score goal (points)</div>
+                <div class="info" data-text="scoreGoalRuleInfo">First player to get this many points wins.</div>
+                <div class="field range"><input type="number"><input type="range"></div>
+              </div>
+              <div class="setting rule scoring">
+                <div class="label" data-text="scoringRuleLabel">🎲 Scoring</div>
+                <div class="info" data-text="scoringRuleInfo">Controls how points are attributed.</div>
+                <div class="field">
+                  <select>
+                    <option value="timeBased" data-text="fastestAnswersGetMorePoints">Fastest answers get more points
+                    </option>
+                    <option value="constant" data-text="samePoints">All answers are worth 10 points</option>
+                  </select>
+                </div>
+              </div>
+              <div class="setting rule challengeDuration">
+                <div class="label" data-text="challengeDurationRuleLabel">⏲ Challenge duration (seconds)</div>
+                <div class="info" data-text="challengeDurationRuleInfo">Players have this long to guess.</div>
+                <div class="field range"><input type="number"><input type="range"></div>
+              </div>
+              <div class="setting rule shorthands">
+                <div class="label" data-text="shorthandsRuleLabel">✂️ Shorthands</div>
+                <div class="info" data-text="shorthandsRuleInfo">Whether common abbreviations and alternate spellings
+                  are considered valid.</div>
+                <div class="field radio">
+                  <input type="radio" name="shorthand" value="allow" id="shorthandAccepted"><label
+                    for="shorthandAccepted" data-text="allow">Allow</label><input type="radio" name="shorthand"
+                    value="reject" id="shorthandRejected"><label for="shorthandRejected"
+                    data-text="reject">Reject</label>
+                </div>
+              </div>
+              <div class="setting rule visibleGuesses">
+                <div class="label" data-text="visibleGuessesRuleLabel">🔍 Guess visibility</div>
+                <div class="info" data-text="visibleGuessesRuleInfo">Whether other players' incorrect guesses will be
+                  shown or not.</div>
+                <div class="field radio">
+                  <input type="radio" name="visibleGuesses" value="public" id="visibleGuessesVisible"><label
+                    for="visibleGuessesVisible" data-text="show">Show</label><input type="radio" name="visibleGuesses"
+                    value="private" id="visibleGuessesHidden"><label for="visibleGuessesHidden"
+                    data-text="hide">Hide</label>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+          <div class="content">
+            <div class="challengeArea">
+              <div class="quickRules">
+                <div class="summary"><span class="dictionary"></span> (<span class="scoreGoal"></span> points)</div>
+                <button class="toggleRules">Edit rules</button>
+              </div>
+              <div class="seating" hidden>
+                <div class="logo">
+                  <img src="/games/popsauce/images/logo.png" width="480" height="240">
+                </div>
+                <div class="lastRound">
+                  <div class="winnerPicture">
+                    <img>
+                    <div class="medal">🥇</div>
+                  </div>
+                  <div class="winnerNickname"></div>
+                  <div data-text="wonTheLastRound">won the last round!</div>
+                </div>
+              </div>
+              <div class="round" hidden>
+                <div class="loading" data-text="loading">Loading…</div>
+                <div class="challenge" hidden>
+                  <div class="header">
+                    <span class="prompt"></span>
+                    <span class="timer"></span>
+                  </div>
+                  <div class="textScroll darkScrollbar">
+                    <div class="text"></div>
+                  </div>
+                  <div class="image">
+                    <div class="actual"></div>
+                  </div>
+                </div>
+                <div class="challengeResult" hidden>
+                  <div class="resultBox">
+                    <div class="source">
+                      <div data-text="theAnswerWas">The answer was</div>
+                      <div class="value"></div>
+                    </div>
+                    <div class="details"></div>
+                  </div>
+                  <div class="fastest"></div>
+                  <div class="submitter"></div>
+                  <div class="imageCredits"></div>
+                </div>
+              </div>
+            </div>
+            <div class="scoreboard lower darkScrollbar" hidden></div>
+          </div>
+        </div>
+        <div class="bottom">
+          <div class="join">
+            <button class="styled joinRound" data-text="joinGame">Join game</button>
+          </div>
+          <div class="joined" hidden>
+            <div class="seating">
+              <span data-text="youAreIn">You're in!</span>
+              <button class="styled red leaveRound" data-text="leaveGame">Leave</button>
+            </div>
+            <form class="round guessing">
+              <input type="text" minlength="1" maxlength="50" autocomplete="off" autocorrect="off" autocapitalize="off"
+                spellcheck="false" class="styled">
+            </form>
+            <div class="round doneGuessing"></div>
+          </div>
+        </div>
+      </div>
+      <div class="scoreboard right darkScrollbar" hidden></div>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/common/dom.js"></script>
+  <script src="/common/utils.js"></script>
+  <script src="/common/audio.js"></script>
+  <script src="/common/gfx.js"></script>
+  <script src="/common/getPostJson.js"></script>
+  <script src="/common/math.js"></script>
+  <script src="/common/text.js"></script>
+  <script src="/games/game.js"></script>
+  <script src="/games/popsauce/popsauce.js"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"c8be344ce8704c61a1709a0e8496ee3d","r":1,"spa":2}' crossorigin="anonymous"></script>
+</body>
+
+</html>
